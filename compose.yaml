@@ -1,0 +1,18 @@
+services:
+    client:
+        build: ./client
+        container_name: client-MERN
+        ports:
+            - 127.0.0.1:5600:5600
+        volumes:
+            - ./client:/app # binding
+        tty: true # it's necessary for vite
+        depends_on:
+            - server
+    server:
+        build: ./server
+        container_name: server-MERN
+        ports:
+            - 127.0.0.1:5500:5500
+        volumes:
+            - ./server:/app # binding
