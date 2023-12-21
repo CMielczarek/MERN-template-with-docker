@@ -1,20 +1,45 @@
 import { useEffect, useState } from 'react'
+import styled from 'styled-components'
 
-interface Data {
-    msg: string
+interface DataType {
+    message: string
 }
 
+const Card = styled.div`
+    background-color: #3887be;
+    padding: 1em;
+`
+const H1 = styled.div`
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+`
+
 function App() {
-    const [data, setData] = useState<Data>({ msg: '' })
+    const [data, setData] = useState<DataType>({ message: '' })
+
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch('http://localhost:5500')
-            const data = await response.json()
-            setData(data)
-        }
-        fetchData()
+        fetch('http://localhost:5500/')
+            .then((res) => res.json())
+            .then((data) => {
+                console.log('Received data:', data)
+                setData(data)
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error)
+            })
     }, [])
-    return <h1>{data.msg}</h1>
+
+    const handleClick = () => {
+        setData({ message: 'loading' })
+    }
+
+    return (
+        <Card>
+            <button onClick={handleClick}>Fetch</button>
+            <H1>{data.message}</H1>
+        </Card>
+    )
 }
 
 export default App
